@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mongo-frontend
+  labels:
+    app.kubernetes.io/name: mongo-frontend
+    app.kubernetes.io/component: backend
+spec:
+  containers:
+    - name: mongo-frontend
+      image: mongo:4.2
+      volumeMounts:
+        - mountPath: /data/db
+          name: mongo-pvc
+      args:
+        - --bind_ip
+        - 0.0.0.0
+      ports:
+        - containerPort: 27017
+  volumes:
+    - name: mongo-pvc
+      persistentVolumeClaim:
+        claimName: mongo-pvc
